@@ -16,7 +16,7 @@ CORS(app)
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 '''
-# db_drop_and_create_all()
+#db_drop_and_create_all()
 
 ## ROUTES
 '''
@@ -29,16 +29,13 @@ CORS(app)
 '''
 @app.route('/drinks', methods = ['GET'])
 def get_drinks():
-    # Attempting to query and return drink information
     try:
-        # Querying drinks using sqlalchemy
-        dnk = Drink.query.order_by(Drink.id).all()
+        dnk = Drink.query.all()
 
-        # Returning shortened drink information as json
         return jsonify({
             'success': True,
             'drinks': [dn.short() for dn in dnk]
-        })
+        }) , 200
     except:
         abort(404)
 
@@ -53,16 +50,13 @@ def get_drinks():
 '''
 @app.route('/drinks-detail', methods = ['GET'])
 def get_drinks_detail():
-    # Attempting to query and return drink information
     try:
-        # Querying drinks using sqlalchemy
-        dnk = Drink.query.order_by(Drink.id).all()
+        dnk = Drink.query.all()
 
-        # Returning shortened drink information as json
         return jsonify({
             'success': True,
             'drinks': [dn.long() for dn in dnk]
-        })
+        }), 200
     except:
         abort(404)
 
@@ -96,7 +90,7 @@ def post_new_drinks(jwt):
         return jsonify({
             'success': True,
             'drinks': [drink.long()]
-        })
+        }), 200
 
     except:
         abort(422)
@@ -135,7 +129,7 @@ def update_drink(jwt, id):
             return jsonify({
                 'success': True,
                 'drinks': [drink.long()]
-            })
+            }), 200
         except:
             abort(422)
     else:
@@ -163,7 +157,7 @@ def delete_drink(jwt, id):
             return jsonify({
                 'success': True,
                 'delete': id,
-            })
+            }) , 200
         except:
             abort(422)
     else:
@@ -196,7 +190,7 @@ def not_found(error):
     return jsonify({
                     "success": False,
                     "error": 404,
-                    "message": "not found"
+                    "message": "resource not found"
                     }), 404
 '''
 @TODO implement error handler for 404
